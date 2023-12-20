@@ -1,6 +1,22 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+enum MovieGenre {
+  action
+  drama
+  comedy
+  horror
+}
+
+enum ageRating {
+  G
+  PG
+  PG13
+  R
+  NC17
+}
+
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +24,46 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  username String    @unique
+  password String
+  email    String    @unique
+  isAdmin  Boolean   @default(false)
+  comments Comment[]
+  reviews  Review[]
+}
+
+model Comment {
+  id       Int    @id @default(autoincrement())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
+  review   Review @relation(fields: [reviewId], references: [id])
+  reviewId Int
+  body     String
+}
+
+model Movie {
+  id           Int         @id @default(autoincrement())
+  title        String
+  genre        MovieGenre?
+  ageRating       ageRating?  
+
+  release_year DateTime?   @db.Date
+  director     String
+  imglink      String
+  reviews      Review[]
+}
+
+model Review {
+  id       Int       @id @default(autoincrement())
+  movie    Movie     @relation(fields: [movieId], references: [id])
+  movieId  Int
+  User     User?     @relation(fields: [userId], references: [id])
+  userId   Int?
+  rating   Int 
+  body     String
+  comments Comment[]
 }
