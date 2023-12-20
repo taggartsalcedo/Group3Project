@@ -51,7 +51,7 @@ model Movie {
   genre        MovieGenre?
   ageRating       ageRating?  
 
-  release_year DateTime?   @db.Date
+  release_year Int
   director     String
   imglink      String
   reviews      Review[]
