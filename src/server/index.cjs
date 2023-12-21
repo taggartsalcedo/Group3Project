@@ -6,7 +6,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-// app.use("/api", require("./api"));
+app.use("/api", require("./api/index.cjs"));
 // app.use("/auth", require("./auth"));
 
 app.listen(port, () => {
