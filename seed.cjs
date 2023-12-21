@@ -19,6 +19,14 @@ async function seed() {
           
   ],
   });
+
+  await prisma.user.createMany({
+    data: [{ username: "John", password: "john", email: "john@gmail.com", isAdmin: true},
+    { username: "Clayton", password: "clayton", email: "clayton@gmail.com", isAdmin: false},
+    { username: "Taggert", password: "taggert", email: "taggert@gmail.com", isAdmin: false}
+  ]
+
+  });
 }
 
 seed()
