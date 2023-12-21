@@ -23,10 +23,41 @@ async function seed() {
   await prisma.user.createMany({
     data: [{ username: "John", password: "john", email: "john@gmail.com", isAdmin: true},
     { username: "Clayton", password: "clayton", email: "clayton@gmail.com", isAdmin: false},
-    { username: "Taggert", password: "taggert", email: "taggert@gmail.com", isAdmin: false}
+    { username: "Taggart", password: "taggart", email: "taggart@gmail.com", isAdmin: false}
   ]
 
   });
+
+  const clayton = await prisma.user.findFirst({
+    where: {
+      username: "Clayton"
+    }
+  })
+
+  const taggart = await prisma.user.findFirst({
+    where: {
+      username: "Taggart"
+    }
+  })
+
+  const scream = await prisma.movie.findFirst({
+    where: {
+      title: "Scream"
+    }
+  })
+
+  const scream_review_1 = await prisma.review.create({
+    data: {
+      movieId: scream.id, userId: clayton.id, rating: 5, body: "it was aight"
+
+    }
+  })
+  
+  const scream_review_comment_1 = await prisma.comment.create({
+    data: {
+      userId: taggart.id, reviewId: scream_review_1.id, body: "no way man that movie kicked butt", 
+    }
+  })
 }
 
 seed()
