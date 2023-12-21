@@ -23,7 +23,10 @@ async function seed() {
   await prisma.user.createMany({
     data: [{ username: "John", password: "john", email: "john@gmail.com", isAdmin: true},
     { username: "Clayton", password: "clayton", email: "clayton@gmail.com", isAdmin: false},
-    { username: "Taggart", password: "taggart", email: "taggart@gmail.com", isAdmin: false}
+    { username: "Taggart", password: "taggart", email: "taggart@gmail.com", isAdmin: false},
+    { username: "Alice", password: "alice", email: "alice@gmail.com", isAdmin: false },
+    { username: "Bob", password: "bob", email: "bob@gmail.com", isAdmin: false },
+    { username: "Eve", password: "eve", email: "eve@gmail.com", isAdmin: false },
   ]
 
   });
@@ -46,6 +49,48 @@ async function seed() {
     }
   })
 
+  const alice = await prisma.user.findFirst({
+    where: {
+      username: "Alice"
+    }
+  });
+
+  const bob = await prisma.user.findFirst({
+    where: {
+      username: "Bob"
+    }
+  });
+
+  const eve = await prisma.user.findFirst({
+    where: {
+      username: "Eve"
+    }
+  });
+
+  const johnWick = await prisma.movie.findFirst({
+    where: {
+      title: "John Wick"
+    }
+  });
+
+  const straightOuttaCompton = await prisma.movie.findFirst({
+    where: {
+      title: "Straight Outta Compton"
+    }
+  });
+
+  const johnWickReview = await prisma.review.create({
+    data: {
+      movieId: johnWick.id, userId: alice.id, rating: 4, body: "Amazing action sequences!"
+    }
+  });
+
+  const straightOuttaComptonReview = await prisma.review.create({
+    data: {
+      movieId: straightOuttaCompton.id, userId: bob.id, rating: 5, body: "A powerful and moving film."
+    }
+  });
+
   const scream_review_1 = await prisma.review.create({
     data: {
       movieId: scream.id, userId: clayton.id, rating: 5, body: "it was aight"
@@ -58,7 +103,21 @@ async function seed() {
       userId: taggart.id, reviewId: scream_review_1.id, body: "no way man that movie kicked butt", 
     }
   })
+
+  const johnWickComment = await prisma.comment.create({
+    data: {
+      userId: eve.id, reviewId: johnWickReview.id, body: "I agree, the action was mind-blowing."
+    }
+  });
+
+  const straightOuttaComptonComment = await prisma.comment.create({
+    data: {
+      userId: alice.id, reviewId: straightOuttaComptonReview.id, body: "One of the best hip-hop biopics!"
+    }
+  });
 }
+
+
 
 seed()
   .then(async () => {
