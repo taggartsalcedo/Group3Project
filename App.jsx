@@ -1,20 +1,16 @@
-import { useState } from 'react'
-import './App.css'
-import {Routes, Route} from 'react-router-dom';
 
-const App = () => {
-  
 
+function App() {
+ 
   return (
-    <>
-    <Routes>
-      <Route path= '/movies' element= {AllMovies} />
-      <Route path= '/id' element= {<MovieId} />
-
-    </Routes>
-
-    </>
-  )
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<AllMovies/>}></Route>
+        <Route path="/movies/:id" element={<MovieDetails/>} />
+        <Route path="/reviews/:reviewId/comments" element={<CommentsPage/>} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
